@@ -1,0 +1,29 @@
+package dev.enco.greatcombat.core.scoreboard.impl;
+
+import dev.enco.greatcombat.api.models.IUser;
+import dev.enco.greatcombat.api.models.ScoreboardProvider;
+import java.util.List;
+import java.util.UUID;
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.scoreboard.Scoreboard;
+import me.neznamy.tab.api.scoreboard.ScoreboardManager;
+import org.jetbrains.annotations.NotNull;
+
+public class TABProvider
+implements ScoreboardProvider {
+    @Override
+    public void setScoreboard(@NotNull IUser user, @NotNull String title, @NotNull List<String> lines) {
+        TabAPI tabAPI = TabAPI.getInstance();
+        ScoreboardManager scoreboardManager = tabAPI.getScoreboardManager();
+        Scoreboard sb = scoreboardManager.createScoreboard("greatcombat", title, lines);
+        scoreboardManager.showScoreboard(tabAPI.getPlayer(user.getPlayerUUID()), sb);
+    }
+
+    @Override
+    public void resetScoreboard(@NotNull IUser user) {
+        TabAPI tabAPI = TabAPI.getInstance();
+        ScoreboardManager scoreboardManager = tabAPI.getScoreboardManager();
+        UUID uuid = user.getPlayerUUID();
+        scoreboardManager.resetScoreboard(tabAPI.getPlayer(uuid));
+    }
+}
